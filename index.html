@@ -1,272 +1,313 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S'S DARK COMMUNITY</title>
-    <style>
-        :root {
-            --glow-color: #00d2ff;
-        }
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>S'S DARK COMMUNITY</title>
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Segoe UI', sans-serif; }
-        #game-frame { width: 100%; height: 100vh; border: none; }
+<style>
+:root { --glow-color:#00d2ff; }
 
-        /* MINI CRYSTAL BOX */
-        #main-box {
-            position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 180px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 2px;
-            z-index: 10000;
-            user-select: none;
-            cursor: grab;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            animation: float 4s ease-in-out infinite;
-            touch-action: none;
-        }
+html,body{
+margin:0;padding:0;width:100%;height:100%;
+background:#000;overflow:hidden;
+font-family:'Segoe UI',sans-serif;
+}
 
-        /* ANIMATED RGB BORDER */
-        #main-box::before {
-            content: ""; position: absolute; top: -1.5px; left: -1.5px; right: -1.5px; bottom: -1.5px;
-            background: linear-gradient(45deg, #ff0000, #ff00f7, #00d2ff, #00ff00, #ff0000);
-            background-size: 400%; z-index: -1;
-            border-radius: 20px;
-            animation: borderRotate 10s linear infinite;
-        }
+#game-frame{
+width:100%;height:100vh;border:none;
+}
 
-        @keyframes borderRotate {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 400% 50%; }
-        }
+/* MAIN FLOATING BOX */
+#main-box{
+position:absolute;
+top:15%;left:50%;
+transform:translateX(-50%);
+width:180px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+border-radius:20px;
+padding:2px;
+z-index:9999;
+cursor:grab;
+user-select:none;
+animation:float 4s ease-in-out infinite;
+touch-action:none;
+}
 
-        @keyframes float {
-            0%, 100% { transform: translate(-50%, 0px); }
-            50% { transform: translate(-50%, -8px); }
-        }
+#main-box::before{
+content:"";
+position:absolute;
+top:-2px;left:-2px;right:-2px;bottom:-2px;
+background:linear-gradient(45deg,#ff0000,#ff00f7,#00d2ff,#00ff00,#ff0000);
+background-size:400%;
+border-radius:20px;
+z-index:-1;
+animation:borderRotate 10s linear infinite;
+}
 
-        .inner-content {
-            background: rgba(10, 10, 15, 0.92);
-            border-radius: 18px; padding: 12px;
-            text-align: center;
-        }
+@keyframes borderRotate{
+0%{background-position:0% 50%}
+100%{background-position:400% 50%}
+}
+@keyframes float{
+0%,100%{transform:translate(-50%,0)}
+50%{transform:translate(-50%,-8px)}
+}
 
-        .title {
-            font-size: 11px; font-weight: 900; color: #fff;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            margin-bottom: 12px; text-shadow: 0 0 8px var(--glow-color);
-        }
+.inner-content{
+background:rgba(10,10,15,.95);
+border-radius:18px;
+padding:12px;
+text-align:center;
+}
 
-        /* LOGIN INTERFACE */
-        .key-box {
-            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 8px; padding: 6px; color: #fff; width: 85%;
-            margin-bottom: 10px; outline: none; text-align: center; font-size: 10px;
-        }
-        .start-btn {
-            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-            color: white; border: none; padding: 7px 15px;
-            border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 10px; width: 100%;
-        }
-        
-        .tg-login-btn {
-            display: block; margin-top: 12px; color: #00d2ff;
-            text-decoration: none; font-size: 9px; font-weight: bold;
-            border: 1px dashed rgba(0, 210, 255, 0.4); padding: 5px; border-radius: 6px;
-        }
+.title{
+font-size:11px;
+font-weight:900;
+letter-spacing:1.5px;
+color:#fff;
+margin-bottom:10px;
+text-shadow:0 0 8px var(--glow-color);
+}
 
-        /* SIGNAL AREA */
-        #display-area { display: none; }
-        .label { font-size: 8px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
-        
-        #result-text {
-            font-size: 26px; font-weight: 900; margin: 4px 0;
-            background: linear-gradient(#fff, #999);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            min-height: 38px;
-        }
+/* LOGIN */
+.key-box{
+width:85%;
+padding:6px;
+font-size:10px;
+border-radius:8px;
+border:1px solid rgba(255,255,255,.15);
+background:rgba(255,255,255,.08);
+color:#fff;
+outline:none;
+text-align:center;
+margin-bottom:10px;
+}
 
-        .num-tag {
-            background: rgba(0, 210, 255, 0.1);
-            padding: 3px 10px; border-radius: 8px;
-            font-size: 16px; color: var(--glow-color);
-            display: inline-block; margin-bottom: 10px;
-            font-family: 'Courier New', monospace; font-weight: bold;
-            border: 0.5px solid rgba(0, 210, 255, 0.3);
-        }
+.start-btn{
+width:100%;
+border:none;
+padding:7px;
+border-radius:20px;
+font-size:10px;
+font-weight:bold;
+cursor:pointer;
+color:#fff;
+background:linear-gradient(90deg,#00d2ff,#3a7bd5);
+}
 
-        .timer-info { font-size: 9px; color: #fff; margin-bottom: 4px; }
-        .progress-bg {
-            width: 100%; height: 4px; background: rgba(255,255,255,0.05);
-            border-radius: 10px; overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%; width: 100%;
-            background: linear-gradient(90deg, #00d2ff, #00ff87);
-            transition: width 1s linear;
-        }
+.tg-login-btn{
+display:block;
+margin-top:10px;
+font-size:9px;
+color:#00d2ff;
+text-decoration:none;
+border:1px dashed rgba(0,210,255,.4);
+padding:5px;
+border-radius:6px;
+}
 
-        #ai-status {
-            font-size: 7px; color: #00ff87; margin-top: 6px;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
+/* SIGNAL */
+#display-area{display:none}
 
-        .tg-btn-signal {
-            display: inline-block; margin-top: 10px; color: #00d2ff;
-            text-decoration: none; font-size: 9px; font-weight: bold;
-            border: 1px solid rgba(0, 210, 255, 0.3); padding: 3px 8px; border-radius: 5px;
-        }
+.label{
+font-size:8px;
+color:#aaa;
+letter-spacing:1px;
+}
 
-    </style>
+#result-text{
+font-size:26px;
+font-weight:900;
+margin:4px 0;
+min-height:38px;
+background:linear-gradient(#fff,#999);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.num-tag{
+display:inline-block;
+margin-bottom:8px;
+padding:3px 10px;
+font-size:16px;
+border-radius:8px;
+color:var(--glow-color);
+background:rgba(0,210,255,.1);
+border:.5px solid rgba(0,210,255,.3);
+font-family:Courier New,monospace;
+}
+
+.timer-info{
+font-size:9px;
+color:#fff;
+margin-bottom:4px;
+}
+
+.progress-bg{
+width:100%;
+height:4px;
+background:rgba(255,255,255,.05);
+border-radius:10px;
+overflow:hidden;
+}
+
+.progress-fill{
+height:100%;
+width:100%;
+background:linear-gradient(90deg,#00d2ff,#00ff87);
+transition:width 1s linear;
+}
+
+#ai-status{
+font-size:7px;
+margin-top:6px;
+color:#00ff87;
+letter-spacing:.5px;
+}
+
+.tg-btn-signal{
+display:inline-block;
+margin-top:8px;
+font-size:9px;
+color:#00d2ff;
+text-decoration:none;
+border:1px solid rgba(0,210,255,.3);
+padding:3px 8px;
+border-radius:5px;
+}
+</style>
 </head>
-<body oncontextmenu="return false;">
 
-    <iframe id="game-frame" src="https://tkclub2.com/#/register?invitationCode=16621180332"></iframe>
+<body oncontextmenu="return false">
 
-    <div id="main-box">
-        <div class="inner-content">
-            <div class="title">S'S DARK COMMUNITY</div>
+<iframe id="game-frame"
+src="https://tkclub2.com/#/register?invitationCode=16621180332"></iframe>
 
-            <!-- Login -->
-            <div id="login-view">
-                <input type="password" id="passKey" class="key-box" placeholder="ENTER SERVER KEY">
-                <button class="start-btn" onclick="activate()">CONNECT AI SERVER</button>
-                <a href="https://t.me/Dark_Communityy0" class="tg-login-btn">GET ACCESS KEY</a>
-            </div>
+<div id="main-box">
+<div class="inner-content">
+<div class="title">S'S DARK COMMUNITY</div>
 
-            <!-- Signal Interface -->
-            <div id="display-area">
-                <div class="label" id="period-label">ANALYZING MARKET...</div>
-                <div id="result-text">FETCHING</div>
-                <div class="num-tag" id="lucky-num">0 &amp; 0</div>
-                
-                <div class="timer-info">NEXT: <span id="timer-val" style="color:var(--glow-color)">30</span>S</div>
-                <div class="progress-bg">
-                    <div class="progress-fill" id="wave-progress"></div>
-                </div>
-                <div id="ai-status">SERVER: CONNECTED</div>
+<div id="login-view">
+<input type="password" id="passKey" class="key-box"
+placeholder="ENTER SERVER KEY">
+<button class="start-btn" onclick="activate()">CONNECT AI SERVER</button>
+<a class="tg-login-btn" href="https://t.me/Dark_Communityy0">GET ACCESS KEY</a>
+</div>
 
-                <a href="https://t.me/Dark_Communityy0" class="tg-btn-signal">AI TELEGRAM SERVER</a>
-            </div>
-        </div>
-    </div>
+<div id="display-area">
+<div class="label" id="period-label">ANALYZING MARKET...</div>
+<div id="result-text">FETCHING</div>
+<div class="num-tag" id="lucky-num">0 & 0</div>
 
-        // DRAG LOGIC (SAME AS ORIGINAL)
-        const box = document.getElementById('main-box');
-        let isDragging = false, offset = [0,0];
-        const start = (e) => {
-            if(e.target.closest('input, button, a')) return;
-            isDragging = true;
-            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            offset = [box.offsetLeft - clientX, box.offsetTop - clientY];
-            box.style.animation = 'none';
-        };
-        const move = (e) => {
-            if(!isDragging) return;
-            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            box.style.left = (clientX + offset[0]) + 'px';
-            box.style.top = (clientY + offset[1]) + 'px';
-            box.style.transform = 'none';
-        };
-        const stop = () => isDragging = false;
-        box.addEventListener('mousedown', start);
-        document.addEventListener('mousemove', move);
-        document.addEventListener('mouseup', stop);
-        box.addEventListener('touchstart', start);
-        document.addEventListener('touchmove', move);
-        document.addEventListener('touchend', stop);
+<div class="timer-info">
+NEXT: <span id="timer-val" style="color:var(--glow-color)">30</span>S
+</div>
 
-        // --- ADVANCED AI SERVER ENGINE ---
-        let lastBlockId = -1;
-        let virtualHistory = [];
-        let currentPrediction = { res: "---", nums: "--", color: "#fff" };
+<div class="progress-bg">
+<div class="progress-fill" id="wave-progress"></div>
+</div>
 
-        function activate() {
-            if(document.getElementById('passKey').value === "Apexhack") {
-                document.getElementById('login-view').style.display = 'none';
-                document.getElementById('display-area').style.display = 'block';
-                initAIServer();
-            } else { alert("ACCESS DENIED: INVALID SERVER KEY"); }
-        }
+<div id="ai-status">SERVER: CONNECTED</div>
+<a class="tg-btn-signal" href="https://t.me/Dark_Communityy0">
+AI TELEGRAM SERVER
+</a>
+</div>
+</div>
+</div>
 
-        function initAIServer() {
-            setInterval(() => {
-                const now = new Date();
-                const sec = now.getSeconds();
-                const remains = sec >= 30 ? 60 - sec : 30 - sec;
-                const blockId = Math.floor(now.getTime() / 30000);
+<script>
+/* ===== SMOOTH DRAG SYSTEM ===== */
+const box=document.getElementById("main-box");
+let dragging=false,startX=0,startY=0,boxX=0,boxY=0;
 
-                const resultText = document.getElementById('result-text');
-                const aiStatus = document.getElementById('ai-status');
-                const periodLabel = document.getElementById('period-label');
+function dragStart(e){
+if(e.target.closest("input,button,a"))return;
+dragging=true;
+box.style.animation="none";
+const p=e.touches?e.touches[0]:e;
+startX=p.clientX;
+startY=p.clientY;
+boxX=box.offsetLeft;
+boxY=box.offsetTop;
+}
 
-                // Simulation: Start analyzing 5 seconds before new period
-                if (remains >= 25) {
-                    resultText.innerText = "WAITING...";
-                    aiStatus.innerText = "SERVER: SCANNING HISTORY...";
-                    aiStatus.style.color = "#ffcc00";
-                    periodLabel.innerText = "CHECKING TK CLUB DATA";
-                } else {
-                    if (blockId !== lastBlockId) {
-                        lastBlockId = blockId;
-                        runMarketAnalysis(blockId);
-                    }
-                    
-                    resultText.innerText = currentPrediction.res;
-                    resultText.style.background = `linear-gradient(${currentPrediction.color}, #fff)`;
-                    resultText.style.webkitBackgroundClip = "text";
-                    document.getElementById('lucky-num').innerText = currentPrediction.nums;
-                    aiStatus.innerText = "SERVER: SIGNAL SYNCED";
-                    aiStatus.style.color = "#00ff87";
-                    periodLabel.innerText = "WINGO 30S AI SIGNAL";
-                }
+function dragMove(e){
+if(!dragging)return;
+e.preventDefault();
+const p=e.touches?e.touches[0]:e;
+requestAnimationFrame(()=>{
+box.style.left=boxX+(p.clientX-startX)+"px";
+box.style.top=boxY+(p.clientY-startY)+"px";
+box.style.transform="none";
+});
+}
 
-                document.getElementById('timer-val').innerText = remains;
-                const width = (remains / 30) * 100;
-                document.getElementById('wave-progress').style.width = width + "%";
+function dragEnd(){dragging=false;}
 
-            }, 1000);
-        }
+box.addEventListener("mousedown",dragStart);
+document.addEventListener("mousemove",dragMove);
+document.addEventListener("mouseup",dragEnd);
+box.addEventListener("touchstart",dragStart,{passive:false});
+document.addEventListener("touchmove",dragMove,{passive:false});
+document.addEventListener("touchend",dragEnd);
 
-        function runMarketAnalysis(blockId) {
-            // AI logic: Generate result based on simulated history analysis
-            // This algorithm mimics "Trend Following"
-            let seed = (blockId * 0x7FFFFFFF) % 1234567;
-            let trendFactor = (seed % 10);
-            
-            // Analyze simulated last results to avoid long loss streaks
-            let res = "BIG";
-            if (virtualHistory.length > 3) {
-                // If last 3 were the same, high chance of breaking trend
-                let last3 = virtualHistory.slice(-3);
-                if (last3.every(v => v === "BIG")) res = "SMALL";
-                else if (last3.every(v => v === "SMALL")) res = "BIG";
-                else res = trendFactor > 5 ? "BIG" : "SMALL";
-            } else {
-                res = trendFactor > 4 ? "BIG" : "SMALL";
-            }
+/* ===== LOGIN ===== */
+function activate(){
+if(document.getElementById("passKey").value==="Apexhack"){
+document.getElementById("login-view").style.display="none";
+document.getElementById("display-area").style.display="block";
+initAIServer();
+}else{
+alert("ACCESS DENIED : WRONG KEY");
+}
+}
 
-            // Update Prediction
-            virtualHistory.push(res);
-            if(virtualHistory.length > 10) virtualHistory.shift(); // Keep memory small
+/* ===== AI ENGINE ===== */
+let lastBlock=-1;
+let history=[];
+let current={res:"---",nums:"--",color:"#fff"};
 
-            currentPrediction.res = res;
-            if (res === "BIG") {
-                currentPrediction.color = "#00d2ff";
-                let n1 = 5 + (seed % 5);
-                let n2 = 5 + ((seed+2) % 5);
-                currentPrediction.nums = n1 + " & " + n2;
-            } else {
-                currentPrediction.color = "#ff00f7";
-                let n1 = (seed % 5);
-                let n2 = ((seed+3) % 5);
-                currentPrediction.nums = n1 + " & " + n2;
-            }
-        }
-    </script>
+function initAIServer(){
+setInterval(()=>{
+const now=new Date();
+const sec=now.getSeconds();
+const remain=sec>=30?60-sec:30-sec;
+const block=Math.floor(now.getTime()/30000);
 
-</body></html>
+if(remain<25 && block!==lastBlock){
+lastBlock=block;
+runAI(block);
+}
+
+document.getElementById("timer-val").innerText=remain;
+document.getElementById("wave-progress").style.width=(remain/30)*100+"%";
+document.getElementById("result-text").innerText=current.res;
+document.getElementById("lucky-num").innerText=current.nums;
+},1000);
+}
+
+function runAI(id){
+let seed=(id*99991)%100;
+let res=seed>50?"BIG":"SMALL";
+
+history.push(res);
+if(history.length>3){
+let l=history.slice(-3);
+if(l.every(v=>v==="BIG"))res="SMALL";
+if(l.every(v=>v==="SMALL"))res="BIG";
+}
+
+current.res=res;
+if(res==="BIG"){
+current.color="#00d2ff";
+current.nums=(5+seed%5)+" & "+(6+seed%4);
+}else{
+current.color="#ff00f7";
+current.nums=(seed%5)+" & "+((seed+3)%5);
+}
+}
+</script>
+</body>
+    </html>
